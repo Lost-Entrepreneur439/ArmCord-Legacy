@@ -7,7 +7,7 @@
     "description": "ArmCord is a custom client designed to enhance your Discord experience while keeping everything lightweight. Legacy OS Builds.",
     "main": "ts-out/main.js",
     "engines": {
-        "node": ">=16.0.0"
+        "node": ">=16.17.1"
     },
     "scripts": {
         "build": "tsc && copyfiles -u 1 src/**/*.html src/**/**/*.css src/**/**/*.js ts-out/ && copyfiles package.json ts-out/ && copyfiles assets/**/** ts-out/ && npm run fixEsmImportPath",
