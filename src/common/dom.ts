@@ -1,3 +1,5 @@
+import fetch from "cross-fetch";
+
 export function addStyle(styleString: string): void {
     const style = document.createElement("style");
     style.textContent = styleString;

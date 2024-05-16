@@ -1,6 +1,7 @@
 import {BrowserWindow, app, dialog, ipcMain, shell} from "electron";
 import path from "path";
 import fs from "fs";
+import fetch from "cross-fetch";
 import {sleep} from "../common/sleep";
 import {createInviteWindow, mainWindow} from "../discord/window";
 let themeWindow: BrowserWindow;

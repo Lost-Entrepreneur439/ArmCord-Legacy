@@ -79,7 +79,7 @@ async function doAfterDefiningTheWindow(): Promise<void> {
         mainWindow.hide(); // please don't flashbang the user
     }
     if ((await getConfig("windowStyle")) == "transparency" && process.platform === "win32") {
-        // mainWindow.setBackgroundMaterial("mica");
+        //mainWindow.setBackgroundMaterial("mica");
         if ((await getConfig("startMinimized")) == false) {
             mainWindow.show();
         }

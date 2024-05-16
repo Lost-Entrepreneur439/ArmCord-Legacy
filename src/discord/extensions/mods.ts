@@ -1,6 +1,7 @@
 import {app, dialog} from "electron";
 import extract from "extract-zip";
 import path from "path";
+import fetch from "cross-fetch";
 import {getConfig} from "../../common/config";
 import fs from "fs";
 import util from "util";

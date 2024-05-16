@@ -126,8 +126,9 @@ export async function checkIfConfigIsBroken(): Promise<void> {
 
 export function setup(): void {
     console.log("Setting up temporary ArmCord settings.");
+    const isLinux = process.platform === "linux";
     const defaults: Settings = {
-        windowStyle: "default",
+        windowStyle: isLinux ? "native" : "default",
         channel: "stable",
         armcordCSP: true,
         minimizeToTray: true,
