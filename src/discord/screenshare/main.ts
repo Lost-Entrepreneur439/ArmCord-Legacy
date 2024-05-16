@@ -46,7 +46,7 @@ function registerCustomHandler(): void {
                 webPreferences: {
                     sandbox: false,
                     spellcheck: false,
-                    preload: path.join(import.meta.dirname, "preload.js")
+                    preload: path.join(__dirname, "preload.js")
                 }
             });
             ipcMain.once("selectScreenshareSource", (_event, id, name) => {
@@ -62,7 +62,7 @@ function registerCustomHandler(): void {
                     callback({video: result});
                 }
             });
-            capturerWindow.loadURL(`file://${import.meta.dirname}/picker.html`);
+            capturerWindow.loadURL(`file://${__dirname}/picker.html`);
             capturerWindow.webContents.send("getSources", sources);
         }
     });

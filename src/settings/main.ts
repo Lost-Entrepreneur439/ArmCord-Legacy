@@ -24,11 +24,11 @@ export function createSettingsWindow(): void {
             autoHideMenuBar: true,
             webPreferences: {
                 sandbox: false,
-                preload: path.join(import.meta.dirname, "preload.mjs")
+                preload: path.join(__dirname, "preload.js")
             }
         });
         async function settingsLoadPage(): Promise<void> {
-            settingsWindow.loadURL(`file://${import.meta.dirname}/settings.html`);
+            settingsWindow.loadURL(`file://${__dirname}/settings.html`);
         }
         const userDataPath = app.getPath("userData");
         const themesFolder = `${userDataPath}/themes/`;

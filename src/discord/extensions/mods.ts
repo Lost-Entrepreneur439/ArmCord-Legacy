@@ -3,8 +3,8 @@ import extract from "extract-zip";
 import path from "path";
 import {getConfig} from "../../common/config";
 import fs from "fs";
-import {pipeline} from "stream";
-const streamPipeline = pipeline;
+import util from "util";
+const streamPipeline = util.promisify(require("stream").pipeline);
 async function updateModBundle(): Promise<void> {
     if ((await getConfig("noBundleUpdates")) == undefined ?? false) {
         try {

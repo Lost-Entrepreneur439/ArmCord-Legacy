@@ -9,7 +9,7 @@ import {setMenu} from "./menu";
 import * as fs from "fs";
 import contextMenu from "electron-context-menu";
 import os from "os";
-import RPCServer from "arrpc";
+//import RPCServer from "arrpc";
 import {tray} from "../tray";
 import {iconPath} from "../main";
 import {getConfig, setConfig, firstRun} from "../common/config";
@@ -19,11 +19,40 @@ export let inviteWindow: BrowserWindow;
 let forceQuit = false;
 let osType = os.type();
 contextMenu({
+    showSelectAll: true,
     showSaveImageAs: true,
+    showCopyImage: true,
     showCopyImageAddress: true,
+    // @ts-ignore
+    showCopyLink: true,
+    showSaveLinkAs: true,
+    showInspectElement: true,
     showSearchWithGoogle: false,
     showSearchWithDuckDuckGo: false,
     prepend: (_defaultActions, parameters) => [
+        {
+            label: "Open Link in New Window",
+            // Only show it when right-clicking a link
+            visible: parameters.linkURL.trim().length > 0,
+            click: () => {
+                const toURL = parameters.linkURL;
+                const linkWin = new BrowserWindow({
+                    title: "New Window",
+                    width: 1024,
+                    height: 700,
+                    useContentSize: true,
+                    darkTheme: true,
+                    webPreferences: {
+                        nodeIntegration: false,
+                        nodeIntegrationInWorker: false,
+                        experimentalFeatures: true,
+                        devTools: true
+                    }
+                });
+                linkWin.loadURL(toURL);
+                console.log("Opened Link in New Window");
+            }
+        },
         {
             label: "Search with Google",
             // Only show it when right-clicking text
@@ -50,7 +79,7 @@ async function doAfterDefiningTheWindow(): Promise<void> {
         mainWindow.hide(); // please don't flashbang the user
     }
     if ((await getConfig("windowStyle")) == "transparency" && process.platform === "win32") {
-        mainWindow.setBackgroundMaterial("mica");
+        // mainWindow.setBackgroundMaterial("mica");
         if ((await getConfig("startMinimized")) == false) {
             mainWindow.show();
         }
@@ -259,18 +288,14 @@ async function doAfterDefiningTheWindow(): Promise<void> {
         mainWindow.webContents.executeJavaScript(`document.body.removeAttribute("isMaximized");`);
     });
     if ((await getConfig("inviteWebsocket")) == true) {
-        const server = await new RPCServer();
-        server.on("activity", (data: string) => mainWindow.webContents.send("rpc", data));
-        server.on("invite", (code: string) => {
-            console.log(code);
-            createInviteWindow(code);
-        });
+        require("arrpc");
+        //await startServer();
     }
     if (firstRun) {
         mainWindow.close();
     }
     //loadURL broke for no good reason after E28
-    mainWindow.loadFile(`${import.meta.dirname}/../splash/redirect.html`);
+    mainWindow.loadFile(`${__dirname}/../splash/redirect.html`);
 
     if (await getConfig("skipSplash")) {
         mainWindow.show();
@@ -292,7 +317,7 @@ export async function createCustomWindow(): Promise<void> {
         webPreferences: {
             webviewTag: true,
             sandbox: false,
-            preload: path.join(import.meta.dirname, "preload/preload.mjs"),
+            preload: path.join(__dirname, "preload/preload.js"),
             spellcheck: await getConfig("spellcheck")
         }
     });
@@ -310,11 +335,11 @@ export async function createNativeWindow(): Promise<void> {
         show: false,
         frame: true,
         backgroundColor: "#202225",
-        autoHideMenuBar: true,
+        autoHideMenuBar: false,
         webPreferences: {
             webviewTag: true,
             sandbox: false,
-            preload: path.join(import.meta.dirname, "preload/preload.mjs"),
+            preload: path.join(__dirname, "preload/preload.js"),
             spellcheck: await getConfig("spellcheck")
         }
     });
@@ -332,11 +357,11 @@ export async function createTransparentWindow(): Promise<void> {
         frame: true,
         backgroundColor: "#00000000",
         show: false,
-        autoHideMenuBar: true,
+        autoHideMenuBar: false,
         webPreferences: {
             sandbox: false,
             webviewTag: true,
-            preload: path.join(import.meta.dirname, "preload/preload.mjs"),
+            preload: path.join(__dirname, "preload/preload.js"),
             spellcheck: await getConfig("spellcheck")
         }
     });
