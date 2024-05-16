@@ -289,7 +289,6 @@ async function doAfterDefiningTheWindow(): Promise<void> {
     });
     if ((await getConfig("inviteWebsocket")) == true) {
         require("arrpc");
-        //await startServer();
     }
     if (firstRun) {
         mainWindow.close();
