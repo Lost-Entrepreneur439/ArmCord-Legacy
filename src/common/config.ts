@@ -127,6 +127,7 @@ export async function checkIfConfigIsBroken(): Promise<void> {
 export function setup(): void {
     console.log("Setting up temporary ArmCord settings.");
     const isLinux = process.platform === "linux";
+    const isWin = process.platform === "win32";
     const defaults: Settings = {
         windowStyle: isLinux ? "native" : "default",
         channel: "stable",
@@ -150,7 +151,9 @@ export function setup(): void {
         trayIcon: "default",
         doneSetup: false,
         clientName: "ArmCord",
-        customIcon: path.join(__dirname, "../", "/assets/desktop.png")
+        customIcon: isWin
+            ? path.join(__dirname, "../", "/assets/desktop.ico")
+            : path.join(__dirname, "../", "/assets/desktop.png")
     };
     setConfigBulk({
         ...defaults

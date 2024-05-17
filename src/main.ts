@@ -69,7 +69,7 @@ if (!app.requestSingleInstanceLock() && getConfigSync("multiInstance") == (false
         app.commandLine.appendSwitch("enable-features", "WebRTCPipeWireCapturer");
         console.log("Wayland detected, using PipeWire for video capture.");
     }
-    // work around chrome 66 disabling autoplay by default
+    // work around chromium 66 disabling autoplay by default
     app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
     // WinRetrieveSuggestionsOnlyOnDemand: Work around electron 13 bug w/ async spellchecking on Windows.
     // HardwareMediaKeyHandling,MediaSessionService: Prevent Discord from registering as a media service.
@@ -85,6 +85,8 @@ if (!app.requestSingleInstanceLock() && getConfigSync("multiInstance") == (false
     app.whenReady().then(async () => {
         if ((await getConfig("customIcon")) !== undefined ?? null) {
             iconPath = await getConfig("customIcon");
+        } else if (process.platform === "win32") {
+            iconPath = path.join(__dirname, "../", "/assets/desktop.ico");
         } else {
             iconPath = path.join(__dirname, "../", "/assets/desktop.png");
         }

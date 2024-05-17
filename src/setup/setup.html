@@ -127,15 +127,15 @@
                         "linuxNotice"
                     ).innerHTML = `Linux may not work well with tray icons. Depending on your system configuration, you may not be able to see the tray icon. Enable at your own risk. Can be changed later.`;
                 }
-                let useNativeLinux;
+                let windowStyleDefault;
                 if (window.armcordinternal.getOS == "linux") {
-                    useNativeLinux = "native";
+                    windowStyleDefault = "native";
                 } else {
-                    useNativeLinux = "default";
+                    windowStyleDefault = "default";
                 }
                 document.getElementById("next-page4").addEventListener("click", () => {
                     window.armcordinternal.saveSettings({
-                        windowStyle: useNativeLinux,
+                        windowStyle: windowStyleDefault,
                         channel: options.channel,
                         armcordCSP: true,
                         minimizeToTray: true,
