@@ -4,8 +4,9 @@ import path from "path";
 import fetch from "cross-fetch";
 import {getConfig} from "../../common/config";
 import fs from "fs";
+import {promisify} from "node:util";
 import util from "util";
-const streamPipeline = util.promisify(require("stream").pipeline);
+const streamPipeline = promisify(pipeline);
 async function updateModBundle(): Promise<void> {
     if ((await getConfig("noBundleUpdates")) == undefined ?? false) {
         try {
@@ -109,7 +110,6 @@ export async function installModLoader(): Promise<void> {
 
             break;
         }
-
         await streamPipeline(loaderZip.body, fs.createWriteStream(zipPath));
         await extract(zipPath, {dir: path.join(app.getPath("userData"), "plugins")});
 
