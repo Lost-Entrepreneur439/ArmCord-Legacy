@@ -28,7 +28,6 @@ contextMenu({
     showSaveLinkAs: true,
     showInspectElement: true,
     showSearchWithGoogle: false,
-    showSearchWithDuckDuckGo: false,
     prepend: (_defaultActions, parameters) => [
         {
             label: "Open Link in New Window",
